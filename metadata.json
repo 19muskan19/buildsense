@@ -1,0 +1,6 @@
+{
+  "name": "BuildSense",
+  "description": "AI-Enabled Building Condition Monitoring, Construction Quality Assurance, Defect Detection, and Predictive Maintenance Platform.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

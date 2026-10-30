@@ -1,0 +1,1640 @@
+# PROJECT: BUILDSENSE
+## AI-Enabled Building Condition Monitoring & Predictive Maintenance System
+
+Act as a senior full-stack architect, AI/ML engineer, civil-infrastructure domain expert, UI/UX designer, database engineer, and QA engineer.
+
+Build a complete, interactive, professional web application called **BuildSense**, an AI-enabled building condition monitoring, construction quality assurance, defect detection, and predictive maintenance platform.
+
+The application will initially be demonstrated to stakeholders as a working prototype, but its architecture must support subsequent production development.
+
+Do not generate only a landing page, static dashboard, collection of disconnected screens, or wireframe. Build a functional application with working navigation, persistent data, real image analysis using Gemini where supported, a consistent database, role-based interfaces, operational workflows, charts, reports, and meaningful interactions.
+
+Do not stop after generating the frontend. Implement the backend, data models, API endpoints, persistence, validation, error handling, and integration points as well.
+
+Use the requirements below as the authoritative specification.
+
+# 1. PRODUCT VISION
+
+BuildSense transforms building maintenance from reactive repairs into proactive, risk-based, predictive asset management.
+
+The platform must support the complete lifecycle:
+
+Construction quality inspection → Building registration → Field inspection → AI defect detection → Engineer verification → Building Condition Index calculation → Risk assessment → Maintenance prioritisation → Work-order assignment → Repair evidence → Engineer verification → Reinspection → Updated condition history → Predictive maintenance planning.
+
+Additional workflows:
+- Occupants report defects using building QR codes.
+- Construction teams record quality checks and failed material tests.
+- Senior management monitors buildings, divisions, risks, budgets, and maintenance performance.
+- Auditors inspect the complete history of observations, decisions, and repairs.
+
+All observations must be linked to a common building and element record.
+
+The platform must never automatically make final structural safety decisions. Qualified engineers must verify significant findings.
+
+# 2. REQUIRED TECHNOLOGY STACK
+
+Implement a modern full-stack web application using the following technologies where supported by Google AI Studio.
+
+Frontend:
+- React and TypeScript.
+- Vite or the framework automatically selected by AI Studio.
+- Tailwind CSS.
+- shadcn/ui or an equivalent accessible component library.
+- Lucide icons.
+- Apache ECharts or Recharts for analytics.
+- React Router for navigation.
+- React Hook Form and Zod for form handling and validation.
+
+Backend:
+- Node.js server-side runtime supported by AI Studio.
+- TypeScript.
+- REST APIs with structured JSON responses.
+- Gemini API through the official Google Gen AI SDK, using server-side credentials.
+- Modular services, validation schemas, reusable components, and centralized error handling.
+
+Database and authentication:
+- Firebase Authentication.
+- Cloud Firestore for persistent application records and real-time updates.
+- Firebase Storage or a secure object-storage abstraction for photographs and documents, if available.
+- Role-based authorization enforced by backend services and Firestore security rules.
+- Firebase emulator or local demonstration mode if cloud services cannot be configured.
+
+Maps:
+- Leaflet with OpenStreetMap tiles.
+- Do not require a paid mapping API.
+
+Document generation:
+- Generate downloadable PDF building-condition reports, defect registers, and maintenance plans using a suitable PDF library.
+- Support CSV export for tables and registers.
+
+Important architectural rules:
+1. Never expose Gemini API keys, service credentials, or privileged Firebase credentials in browser code.
+2. Use the AI Studio Secrets facility for server-side secrets.
+3. Do not place secrets in source files, browser storage, public configuration, or logs.
+4. Use server-side APIs for privileged operations.
+5. Use Firestore transactions or equivalent consistency controls for important updates.
+6. Use pagination, search filters, and appropriate database indexes.
+7. Provide loading, success, empty, validation-error, and server-error states.
+8. Implement responsive layouts for desktop, tablet, and mobile.
+9. Keep the application deployable through AI Studio and its supported Cloud Run deployment path.
+10. If a requested technology cannot be provisioned in AI Studio, implement a clean abstraction and explain the required external configuration rather than silently pretending the service exists.
+
+Use a modular structure with separate areas for UI, routes, components, data models, backend APIs, services, authentication, calculations, AI integration, and reporting.
+
+# 3. VISUAL DESIGN AND EXPERIENCE
+
+Create a polished enterprise-grade infrastructure management interface.
+
+Product name: BuildSense.
+
+Subtitle: AI-Powered Building Health & Preventive Maintenance.
+
+Use a modern, professional visual identity:
+- Navy and slate navigation.
+- White and light-gray content backgrounds.
+- Clear typography and generous spacing.
+- Red for critical alerts.
+- Orange or amber for high-risk warnings.
+- Blue for information.
+- Green for verified and healthy states.
+- Consistent cards, charts, tables, filters, badges, dialogs, and forms.
+
+The interface must look like a real infrastructure management product, not a generic AI-generated dashboard.
+
+Desktop layout:
+- Collapsible left sidebar.
+- Top navigation with breadcrumbs.
+- Global search.
+- Notifications.
+- Active role and user menu.
+- Main content area with responsive cards, tables, and charts.
+
+Mobile layout:
+- Compact header.
+- Bottom navigation for the field application.
+- Touch-friendly controls.
+- Camera and photo upload.
+- Building and element selection.
+- Inspection forms.
+- Clear offline and synchronization indicators.
+
+Create a polished login screen and a demo role-selection mode.
+
+Do not require real government credentials to demonstrate the prototype.
+
+# 4. USER ROLES AND ACCESS CONTROL
+
+Implement the following roles:
+
+1. Chief Engineer (CE)
+2. Superintending Engineer (SE)
+3. Executive Engineer (EE)
+4. Assistant Engineer (AE)
+5. Junior Engineer / Field Inspector (JE)
+6. Contractor
+7. Auditor
+8. Occupant / Public User
+
+Role capabilities:
+
+CE:
+- Statewide portfolio dashboard.
+- Division comparisons.
+- Critical-risk overview.
+- Budget allocation.
+- Annual maintenance plan review.
+- Portfolio analytics and reports.
+
+SE:
+- Regional and division-level performance.
+- High-risk building monitoring.
+- Inspection completion.
+- Overdue work orders.
+- Maintenance programme review.
+
+EE:
+- Division dashboard.
+- Building and construction monitoring.
+- Defect review.
+- Work-order assignment and tracking.
+- Repair approvals within assigned authority.
+- Reports.
+
+AE:
+- Inspections.
+- AI finding verification.
+- Building and element records.
+- Rectification verification.
+- Construction quality approvals.
+
+JE:
+- Assigned buildings.
+- Inspection task list.
+- Field photo capture.
+- Defect reporting.
+- Measurements and NDT readings.
+- Offline draft queue.
+- Inspection submission.
+
+Contractor:
+- Assigned work orders only.
+- Repair instructions.
+- Due dates.
+- Progress updates.
+- Before/after photographs.
+- Completion submission.
+- Rejected-work resubmission.
+
+Auditor:
+- Read-only access to permitted records.
+- Audit trail.
+- Inspection history.
+- Verification history.
+- Exportable reports.
+
+Occupant:
+- QR-based issue submission.
+- Complaint acknowledgement.
+- Complaint status tracking through a complaint reference.
+
+Implement backend-enforced role permissions, not merely hidden navigation links.
+
+For the demonstration, include sample role accounts or a role selector. Clearly separate demo authentication from production authentication.
+
+# 5. APPLICATION NAVIGATION
+
+Create the following navigation groups.
+
+OVERVIEW:
+- Home.
+- State Dashboard.
+- Division Dashboard.
+- Alerts & Notifications.
+
+ASSET MANAGEMENT:
+- Building Registry.
+- Building Health Passport.
+- Floors, Zones & Elements.
+- Asset Map.
+- Building Records.
+
+INSPECTIONS:
+- Inspection Schedule.
+- Field Inspections.
+- AI Defect Analysis.
+- Defect Register.
+- Change Detection.
+- Sensor Monitoring.
+
+CONSTRUCTION QUALITY:
+- Projects.
+- Stage-Gate Inspections.
+- Quality Checklists.
+- Material Testing.
+- Failed Tests & NCRs.
+
+MAINTENANCE:
+- Risk & Priority Queue.
+- Rectification Work Orders.
+- Contractor Portal.
+- Repair Verification.
+- Predictive Maintenance.
+- Annual Maintenance Plan.
+- Budget Optimisation.
+
+RECORDS & ADMINISTRATION:
+- Records Vault.
+- Reports.
+- Audit Trail.
+- User & Role Management.
+- System Settings.
+
+Occupants should use a simplified public reporting experience rather than the administrative interface.
+
+Each navigation item must open a functional screen. Do not leave empty pages or dead links.
+
+# 6. CORE DATA MODEL
+
+Implement a consistent, related data model.
+
+Portfolio:
+- id
+- name
+- state
+- description
+
+Division:
+- id
+- name
+- district
+- responsibleEngineerId
+
+Building:
+- id
+- buildingCode
+- name
+- department
+- buildingType
+- address
+- district
+- divisionId
+- latitude
+- longitude
+- yearBuilt
+- numberOfFloors
+- structuralSystem
+- occupancyType
+- criticality
+- status
+- currentBCI
+- lastInspectionAt
+- nextInspectionAt
+
+Element:
+- id
+- buildingId
+- floorId
+- zoneId
+- elementCode
+- elementType
+- structuralClass
+- locationDescription
+- drawingCoordinates
+- criticality
+- currentConditionGrade
+
+Inspection:
+- id
+- buildingId
+- inspectorId
+- inspectionMethod
+- inspectionDate
+- weather
+- checklistResults
+- NDTReadings
+- photoIds
+- status
+- submittedAt
+- verifiedBy
+- verifiedAt
+
+Defect:
+- id
+- buildingId
+- elementId
+- inspectionId
+- type
+- subtype
+- structuralSignificance
+- description
+- dimensions
+- measuredCrackWidthMm
+- measuredLengthMm
+- estimatedAreaSqM
+- severityGrade
+- aiConfidence
+- aiExplanation
+- engineerVerified
+- engineerGrade
+- engineerNotes
+- imageIds
+- riskScore
+- priorityBand
+- status
+- firstObservedAt
+- lastObservedAt
+- previousObservationId
+- assignedWorkOrderId
+
+DefectObservation:
+- id
+- defectId
+- observationDate
+- measuredDimensions
+- severityGrade
+- photoIds
+- inspectionId
+- changeFromPrevious
+- inspectorId
+
+WorkOrder:
+- id
+- buildingId
+- defectIds
+- title
+- repairMethod
+- estimatedCostINR
+- approvedBudgetINR
+- contractorId
+- assignedEngineerId
+- priorityBand
+- issuedAt
+- dueDate
+- status
+- progressPercent
+- beforePhotoIds
+- afterPhotoIds
+- completionNotes
+- submittedForVerificationAt
+- verifiedBy
+- verifiedAt
+- rejectionReason
+- actualCostINR
+
+ConstructionProject:
+- id
+- buildingId
+- projectName
+- contractorId
+- projectCostINR
+- plannedProgress
+- actualProgress
+- startDate
+- targetCompletionDate
+- status
+
+QualityCheck:
+- id
+- projectId
+- buildingId
+- elementId
+- constructionStage
+- checklist
+- testType
+- testResult
+- testValue
+- acceptanceCriteria
+- passed
+- engineerApproval
+- evidencePhotoIds
+
+Complaint:
+- id
+- buildingId
+- complaintReference
+- category
+- description
+- locationDescription
+- photoIds
+- submittedAt
+- status
+- contactDetails
+- linkedDefectId
+- assignedWorkOrderId
+
+Sensor:
+- id
+- buildingId
+- elementId
+- sensorType
+- unit
+- threshold
+- installationDate
+- status
+
+SensorReading:
+- id
+- sensorId
+- timestamp
+- value
+- qualityStatus
+- anomalyStatus
+
+BuildingDocument:
+- id
+- buildingId
+- elementId
+- category
+- fileName
+- storagePath
+- uploadedBy
+- uploadedAt
+- version
+- description
+
+Notification:
+- id
+- recipientId
+- type
+- title
+- message
+- relatedRecordId
+- read
+- createdAt
+
+AuditEvent:
+- id
+- actorId
+- action
+- entityType
+- entityId
+- timestamp
+- beforeSummary
+- afterSummary
+- reason
+
+ModelAnalysis:
+- id
+- imageId
+- modelName
+- modelVersion
+- result
+- confidence
+- generatedAt
+- engineerReviewStatus
+
+MaintenancePlan:
+- id
+- year
+- availableBudgetINR
+- selectedWorkOrderIds
+- projectedRiskReduction
+- estimatedTotalCostINR
+- createdBy
+- createdAt
+
+Use proper timestamps, record ownership, validation, and references. Use subcollections or collection references where appropriate. Avoid storing large image binaries directly in Firestore.
+
+# 7. DASHBOARD AND BUILDING REGISTRY
+
+Create a functional Building Registry.
+
+Include:
+- Search by building name and code.
+- Filters for district, division, type, risk, condition, and inspection status.
+- Sorting and pagination.
+- Map/list view.
+- Building registration form.
+- Building detail view.
+- Element hierarchy.
+- Inspection history.
+- Open defects.
+- Open work orders.
+- Documents and reports.
+
+Seed the prototype with at least:
+- 20 fictional buildings.
+- 4 fictional divisions.
+- 8 construction projects.
+- 30 defect records.
+- 15 work orders.
+- 20 inspection records.
+- 10 complaints.
+- Sample documents, quality checks, and sensor readings.
+
+Use plausible Assam locations, but clearly label all sample records and statistics as fictional demonstration data.
+
+Create varied conditions and statuses so that all dashboard charts and filters are meaningful.
+
+All charts must derive from the shared dataset rather than unrelated hardcoded values.
+
+# 8. BUILDING HEALTH PASSPORT
+
+Create a digital passport for each building.
+
+Display:
+- Building identity and location.
+- Current Building Condition Index (BCI).
+- Condition band.
+- Primary structural risk indicators.
+- Component condition scores.
+- Inspection timeline.
+- Defect history.
+- Maintenance and repair history.
+- Documents and certificates.
+- Next inspection date.
+- Sensor alerts.
+- Photographs and element locations.
+- Maintenance recommendations.
+
+Create tabs:
+1. Overview.
+2. Floors & Elements.
+3. Defects.
+4. Inspection History.
+5. Repairs.
+6. Documents.
+7. Sensors.
+8. Forecast.
+9. Audit History.
+
+Include an element-level view showing which column, beam, slab, roof, wall, or service area has an issue.
+
+Provide PDF export for the building condition report.
+
+The BCI must be calculated using a documented configurable formula, not an arbitrary random value.
+
+# 9. AI-POWERED IMAGE ANALYSIS
+
+Implement actual image analysis using the Gemini API through the server-side runtime.
+
+Create an AI defect analysis service that accepts an uploaded building photograph and structured metadata.
+
+Input metadata:
+- Building ID.
+- Floor and zone.
+- Element type.
+- Structural class.
+- Image capture date.
+- Inspection method.
+- Optional crack scale marker.
+- Optional known measurement reference.
+- Optional engineer notes.
+
+Analyse the image for the following visible defect categories:
+
+STRUCTURAL:
+- Cracks.
+- Spalling.
+- Exposed reinforcement.
+- Visible corrosion staining.
+- Concrete deterioration.
+- Honeycombing.
+- Surface scaling.
+- Erosion.
+- Efflorescence.
+
+MOISTURE:
+- Visible damp patches.
+- Water stains.
+- Suspected leakage.
+- Surface mould or biological growth.
+
+NON-STRUCTURAL:
+- Damaged plaster.
+- Paint peeling.
+- Damaged tiles.
+- Damaged doors or windows.
+- Sealant failure.
+- Visible waterproofing damage.
+
+CONSTRUCTION QUALITY:
+- Visible honeycombing.
+- Surface workmanship defects.
+- Visible misalignment.
+- Observable curing-related surface concerns.
+- Other visible workmanship deviations.
+
+Do not claim that a normal RGB image can reliably identify hidden moisture, concealed reinforcement corrosion, internal delamination, or structural settlement.
+
+For each detected or suspected finding, return structured JSON containing:
+- defectType
+- subtype
+- visibleEvidence
+- boundingBoxNormalized, when supported
+- approximateRegion
+- severityGradeProvisional
+- confidence
+- estimatedDimensions
+- measurementMethod
+- structuralSignificanceProvisional
+- recommendedNextStep
+- engineerVerificationRequired
+- limitations
+
+Use a validated schema and handle malformed responses.
+
+Do not fabricate confidence values or precise dimensions. If the image does not support a reliable measurement, return null and request a scale reference or physical measurement.
+
+Do not interpret an uncalibrated image as a precise millimetre measurement.
+
+A crack-width measurement may be provided only when an appropriate scale reference and a defensible calibration method are available. Otherwise, display “Measurement required.”
+
+Add image-quality guidance:
+- Blur.
+- Poor lighting.
+- Overexposure.
+- Insufficient close-up detail.
+- Missing scale reference.
+
+If image quality is inadequate, recommend retaking the photograph.
+
+AI workflow:
+1. Upload photograph.
+2. Validate file type and size.
+3. Store photograph securely.
+4. Call the server-side Gemini image analysis service.
+5. Validate structured output.
+6. Display provisional findings.
+7. Allow an engineer to edit and verify each finding.
+8. Save confirmed findings to the defect database.
+9. Calculate risk and priority.
+10. Update the building passport and relevant dashboards.
+
+Clearly distinguish:
+- AI-generated provisional assessment.
+- Engineer-verified assessment.
+- Measurement from an actual instrument.
+- Estimated measurement from image analysis.
+
+AI findings must never automatically authorize closure of a safety-critical issue.
+
+If Gemini is unavailable or an API call fails, provide a clearly labelled demonstration fallback. Never present fallback results as genuine model predictions.
+
+# 10. HYBRID AI ARCHITECTURE AND MODEL REGISTRY
+
+Design the AI orchestration layer so the platform can support specialist models without requiring all of them to be trained now.
+
+Define separate interfaces for:
+
+Model 1: Shared visual defect detector.
+- Multi-class instance segmentation.
+- YOLOv8/YOLO11-seg or Mask R-CNN/Mask2Former adapter.
+- Output defect classes, masks, and confidence.
+
+Model 2: Crack analytics.
+- U-Net, DeepLabv3+, or SegFormer adapter.
+- Pixel segmentation, skeletonisation, width, length, orientation, and crack-pattern classification.
+- Do not claim precise output unless calibration and model support exist.
+
+Model 3: Severity grader.
+- Ordinal classification using image features, measured size, element type, and structural significance.
+- Output provisional grade 1–5 and explanation.
+
+Model 4: Thermal moisture and leakage analysis.
+- Support thermal image uploads and temperature-difference metadata.
+- Create a specialist-model adapter for thermal segmentation.
+- Gemini may describe visible thermal patterns, but must not be represented as a validated thermal segmentation model.
+
+Model 5: Sensor anomaly detection.
+- Interface for tilt, settlement, crack-meter, humidity, moisture, and corrosion-probe data.
+- Implement a deterministic threshold baseline for the prototype.
+- Design a replaceable interface for Isolation Forest, STL-based anomaly detection, or an LSTM autoencoder.
+
+Model 6: Change detection.
+- Compare observations of the same building element across inspections.
+- Use metadata, measurements, and image comparison where appropriate.
+- Create an interface for registration and segmentation-based comparisons.
+- Label visual comparisons as provisional if no validated change-detection model is available.
+
+Engine: Risk, forecasting, and maintenance optimisation.
+
+Maintain a model registry with:
+- Model name.
+- Model version.
+- Supported modalities.
+- Supported defect classes.
+- Deployment status.
+- Evaluation metrics.
+- Training dataset version.
+- Last validation date.
+
+Do not claim that YOLO, U-Net, Mask R-CNN, sensor models, or forecasting models are trained or deployed unless their actual model artifacts and serving endpoints are configured.
+
+For the initial prototype, use Gemini for image understanding and deterministic algorithms for risk, BCI, thresholds, and budget planning.
+
+Provide replaceable interfaces for future Python/FastAPI model-serving services.
+
+# 11. DEFECT TAXONOMY
+
+Support a configurable four-level classification.
+
+Level 1: Defect type.
+
+Level 2: Defect subtype.
+
+Level 3: Severity grade.
+
+Level 4: Structural significance.
+
+Defect categories and subtypes must include:
+
+CRACKS:
+- Hairline or shrinkage.
+- Flexural.
+- Shear or diagonal.
+- Settlement-type.
+- Map cracking.
+- Other or undetermined.
+
+SPALLING:
+- Surface spall.
+- Delamination suspected.
+- Spalling with exposed reinforcement.
+
+REINFORCEMENT CORROSION:
+- Rust staining.
+- Exposed reinforcement.
+- Visible reinforcement corrosion.
+- Suspected section loss.
+
+CONCRETE DETERIORATION:
+- Honeycombing.
+- Scaling.
+- Erosion.
+- Efflorescence.
+- Suspected carbonation-related damage.
+
+SETTLEMENT AND DEFORMATION:
+- Differential settlement.
+- Tilt.
+- Sagging.
+- Bulging.
+
+MOISTURE:
+- Rising damp.
+- Penetrating damp.
+- Condensation.
+- Roof leakage.
+- Terrace leakage.
+- Wet-area leakage.
+- Plumbing leakage.
+- Façade-joint leakage.
+
+NON-STRUCTURAL:
+- Plaster damage.
+- Paint peeling.
+- Tile debonding.
+- Waterproofing failure.
+- Algae or fungal growth.
+- Damaged doors/windows.
+- Damaged railings.
+- Sealant failure.
+
+CONSTRUCTION QUALITY:
+- Honeycombing at casting.
+- Reinforcement-cover deficiency.
+- Misalignment.
+- Inadequate curing evidence.
+- Failed concrete or material tests.
+- Other workmanship deviations.
+
+Include “Unknown / Requires assessment” options.
+
+Never infer a precise failure mechanism solely from an image when evidence is insufficient.
+
+# 12. SEVERITY GRADING
+
+Implement configurable severity grades.
+
+Grade 1 — Good / negligible:
+- Example: minor surface wear or very fine visible cracking.
+- Action: record and monitor.
+
+Grade 2 — Minor:
+- Example: minor crack or localised damp staining.
+- Action: routine maintenance planning.
+
+Grade 3 — Moderate:
+- Example: more pronounced cracking, active dampness, rust staining, or local spalling.
+- Action: planned engineer assessment and repair within the configured response window.
+
+Grade 4 — Severe:
+- Example: substantial or growing cracks, exposed reinforcement with spalling, or active leakage affecting important elements.
+- Action: urgent engineer review and controlled repair planning.
+
+Grade 5 — Critical:
+- Example: suspected shear cracking in a primary structural member, significant measured deformation, or other evidence indicating possible immediate danger.
+- Action: immediate escalation for qualified structural assessment and appropriate safety measures.
+
+Store numeric severity grade separately from the descriptive label.
+
+The supplied technical specification includes illustrative crack-width bands:
+- Grade 1: below 0.1 mm.
+- Grade 2: 0.1–0.3 mm.
+- Grade 3: 0.3–1 mm.
+- Grade 4: 1–5 mm.
+- Grade 5: above 5 mm.
+
+These are provisional project assumptions, not a universal grading rule for every defect type. Store them as configurable thresholds requiring review and approval by the client's qualified structural engineers.
+
+Do not use crack width alone to determine safety. Element type, crack pattern, movement, material, exposure, and engineering context also matter.
+
+# 13. STRUCTURAL SIGNIFICANCE
+
+Classify each building element into:
+
+PRIMARY STRUCTURE:
+- Foundations.
+- Columns.
+- Beams.
+- Structural slabs.
+- Shear walls.
+
+SECONDARY STRUCTURE:
+- Staircases.
+- Parapets.
+- Chajjas.
+- Masonry walls.
+
+NON-STRUCTURAL:
+- Finishes.
+- Waterproofing.
+- Fixtures.
+- Non-structural partitions.
+
+Use element criticality on a configurable 1–5 scale.
+
+Initial example:
+- Finishes: 1.
+- Secondary elements: 3.
+- Primary load-bearing elements: 5.
+
+Allow an authorised engineer to configure these values.
+
+The same defect severity must produce a different risk assessment when the affected element has different structural significance.
+
+# 14. DEFECT RISK ENGINE
+
+Implement the following specified formula:
+
+Risk Score = 100 × (S × C × P × E) / 625
+
+Where:
+- S = severity, 1–5.
+- C = element criticality, 1–5.
+- P = progression, 1–5.
+- E = exposure or occupancy consequence, 1–5.
+
+Validate all factors and clamp the final score between 0 and 100.
+
+Store the factors, formula version, and resulting score with each assessment.
+
+P1 emergency override:
+Any engineer-confirmed Grade 5 defect affecting a primary structural element must be classified P1 regardless of the calculated score.
+
+Sensor alarms that meet configured critical thresholds must also trigger the defined emergency escalation workflow.
+
+Initial priority bands:
+- P1: score 80 or above, or a qualifying critical structural override.
+- P2: score 60–79.
+- P3: score 35–59.
+- P4: score below 35.
+
+Use configurable response targets:
+- P1: immediate escalation and qualified engineer assessment; site response target within 24–72 hours according to the approved emergency protocol.
+- P2: repair planning within 30 days.
+- P3: repair within 90 days or the next approved works package.
+- P4: annual maintenance planning and monitoring.
+
+Do not interpret the P1 response target as permission to delay immediate protective measures when a building may be unsafe.
+
+Display the factors and an explanation of why each defect received its score.
+
+# 15. BUILDING CONDITION INDEX
+
+Implement a BCI ranging from 0 to 100, where a higher score means better overall condition.
+
+Use the following condition bands:
+- 85–100: Good.
+- 70–84: Fair.
+- 50–69: Poor.
+- 30–49: Very Poor.
+- 0–29: Critical.
+
+Implement an explainable, configurable area- and criticality-weighted deduction model.
+
+For example:
+
+BCI = max(0, 100 − total weighted defect deductions).
+
+Calculate defect deductions using configurable parameters that account for:
+- Severity.
+- Element criticality.
+- Affected area or element weight.
+- Whether the finding is current, repaired, or superseded.
+- Verified condition after repair.
+
+Normalise deductions to a 0–100 index.
+
+Roll up scores from element to zone, floor, building, division, and portfolio.
+
+Avoid double-counting repeated observations of the same active defect.
+
+Use the latest verified condition as the primary source for the official displayed BCI. Clearly label provisional BCI values when based on unverified AI findings.
+
+Do not automatically improve BCI merely because a work order is closed. Require repair verification or an updated inspection.
+
+Document the formula and expose the configurable parameters in the administrative settings.
+
+# 16. INSPECTION MANAGEMENT
+
+Build a complete inspection scheduling and field inspection module.
+
+Features:
+- Assign inspections to engineers.
+- Choose a building and target elements.
+- Select inspection method.
+- Schedule date and due date.
+- Record weather and site conditions.
+- Show previous inspection results.
+- Display previous photographs where available.
+- Guide the engineer through an inspection checklist.
+- Capture photographs and notes.
+- Record crack measurements.
+- Record NDT test values.
+- Save drafts.
+- Submit inspections for verification.
+- Reopen or request correction of an inspection.
+- Show overdue inspections.
+- Record inspection history.
+
+Support:
+- Mobile photo capture.
+- File upload.
+- Geolocation permission where available.
+- Timestamp.
+- Element tags.
+- Scale-marker metadata.
+- Image-quality guidance.
+
+Use browser-supported functionality and request permissions transparently.
+
+If the camera, GPS, or device feature is unavailable, provide a manual fallback.
+
+Implement a responsive mobile-first field workflow.
+
+# 17. OFFLINE-FIRST FIELD WORKFLOW
+
+Create an offline-aware inspection experience.
+
+Implement:
+- Local draft persistence using IndexedDB.
+- A pending synchronization queue.
+- Online/offline indicator.
+- Retry and error status.
+- Last successful sync timestamp.
+- Idempotency keys for queued submissions.
+- Duplicate-submission prevention.
+- Conflict handling for records changed on multiple devices.
+- Visible pending and failed synchronization counts.
+
+Use a service worker or supported PWA mechanism where feasible.
+
+Allow engineers to access previously cached inspection tasks and selected building records offline.
+
+Do not attempt Gemini image analysis when no network connection is available. Save the image and analysis request locally and queue them for processing when connectivity returns.
+
+Implement an actual synchronization flow for the supported data types. Do not claim full offline capability if some features require connectivity.
+
+Clearly distinguish:
+- Locally saved.
+- Waiting to sync.
+- Syncing.
+- Successfully synced.
+- Sync failed.
+- Requires conflict resolution.
+
+# 18. CHANGE DETECTION AND INSPECTION HISTORY
+
+Support repeat observations of the same element.
+
+When a new inspection is created:
+- Find prior observations for that element.
+- Display previous measurements and photographs.
+- Compare the new observation with the last verified observation.
+- Show changes in crack width, length, severity, area, or sensor measurements.
+- Flag a defect as new, stable, growing, repaired, or uncertain.
+
+Implement deterministic comparisons for numeric measurements.
+
+For image comparisons, provide a provisional side-by-side comparison and a replaceable interface for a specialist vision model.
+
+Never claim a defect has grown based solely on two differently scaled photographs without a valid comparison method.
+
+Display a timeline and trend charts for each defect.
+
+# 19. SENSOR MONITORING
+
+Create a sensor monitoring module supporting:
+- Crack meters.
+- Tiltmeters.
+- Settlement markers.
+- Moisture sensors.
+- Temperature and humidity sensors.
+- Corrosion probes.
+
+Each sensor must include:
+- Building and element.
+- Sensor type.
+- Unit.
+- Reading history.
+- Thresholds.
+- Last reading.
+- Data quality.
+- Alarm status.
+
+For the prototype:
+- Seed realistic fictional readings.
+- Provide a form for adding a reading.
+- Implement configurable high, low, and rate-of-change thresholds.
+- Show charts and alerts.
+- Detect missing or stale readings.
+- Record alarm acknowledgements.
+
+Create an abstraction for future MQTT integration.
+
+Do not pretend to receive live IoT data unless a real source is configured.
+
+Support a future architecture for seasonal adjustment, STL decomposition, Isolation Forest, and LSTM autoencoders. A deterministic threshold implementation is sufficient for the initial working prototype.
+
+# 20. THERMAL AND NDT DATA
+
+Create separate interfaces for thermal imaging and non-destructive testing.
+
+Thermal module:
+- Upload thermal photographs.
+- Enter ambient temperature and relevant capture metadata.
+- Record observed thermal differences.
+- Associate suspected moisture regions with building elements.
+- Display image, annotations, and inspection notes.
+- Label unvalidated AI interpretations as provisional.
+
+NDT module:
+- Rebound hammer.
+- Ultrasonic pulse velocity.
+- Half-cell potential.
+- Cover meter.
+- Carbonation depth.
+- Other approved test methods.
+
+Capture:
+- Test location.
+- Instrument identification.
+- Reading and unit.
+- Test method.
+- Acceptance criterion.
+- Inspector.
+- Date.
+- Attached report.
+- Engineer review.
+
+Do not infer NDT results from ordinary RGB photographs.
+
+# 21. CONSTRUCTION QUALITY TRACKER
+
+Implement a stage-wise construction quality module.
+
+Support stages including:
+- Foundation.
+- Reinforcement.
+- Shuttering/formwork.
+- Plinth and DPC.
+- Columns and beams.
+- Slab pre-pour inspection.
+- Concreting.
+- Curing.
+- Masonry.
+- Waterproofing.
+- Finishing.
+- Final handover.
+
+Features:
+- Construction project details.
+- Building and element linkage.
+- Contractor assignment.
+- Planned versus actual progress.
+- Stage-gate checklists.
+- Material testing.
+- Inspection photographs.
+- Test reports.
+- Non-conformance records.
+- Corrective actions.
+- Engineer approvals.
+- Stage history.
+
+A failed mandatory test must prevent a stage from being marked as passed until an authorised engineer resolves the failure according to the configured workflow.
+
+Create sample failed tests and non-conformance records for the demonstration.
+
+Construction quality findings must use the same element, defect, inspection, and record structures as in-service building defects.
+
+# 22. RECTIFICATION AND WORK-ORDER MANAGEMENT
+
+Implement a complete workflow:
+
+New → Assigned → In Progress → Submitted for Verification → Verified → Closed.
+
+Additional transition:
+Rejected / Correction Required → In Progress.
+
+Each work order must include:
+- Work-order number.
+- Building and element.
+- Linked defects.
+- Priority and risk score.
+- Repair recommendation.
+- Responsible engineer.
+- Contractor.
+- Estimated cost.
+- Approved budget.
+- Start date.
+- Due date.
+- Progress.
+- Before photographs.
+- Repair notes.
+- After photographs.
+- Actual cost.
+- Verification notes.
+- Audit trail.
+
+Actions:
+- Create a work order from one or more defects.
+- Assign a contractor.
+- Set a deadline and budget.
+- Update work progress.
+- Upload evidence.
+- Submit for verification.
+- Approve or reject submitted work.
+- Reopen work if the repair is inadequate.
+- Close verified work.
+
+Contractors must only access their assigned work orders.
+
+When a work order is verified:
+- Update the relevant defect workflow.
+- Record the verification.
+- Preserve all previous observations.
+- Update the maintenance history.
+- Refresh dashboard metrics.
+- Schedule reinspection where required.
+
+Do not delete defect history when repairs are completed.
+
+# 23. OCCUPANT QR REPORTING
+
+Create a public, mobile-friendly issue reporting page.
+
+Features:
+- Building QR-code identification.
+- Building name and location.
+- Issue category.
+- Description.
+- Floor, room, or location.
+- Photograph upload.
+- Optional contact information.
+- Submission confirmation.
+- Unique complaint reference.
+- Complaint status tracking.
+
+Generate printable QR codes that link to the appropriate building's public reporting page.
+
+Validate the building identifier. Never trust a user-supplied building ID without checking it against a permitted public-reporting record.
+
+On submission:
+- Save the complaint.
+- Show the complaint reference.
+- Notify the responsible division within the application.
+- Display the complaint in the departmental queue.
+- Allow authorised staff to triage it.
+- Link it to a defect or work order when appropriate.
+
+Add rate limiting and file validation for public endpoints where supported.
+
+# 24. RISK-BASED MAINTENANCE PRIORITISATION
+
+Build a dedicated maintenance-priority queue.
+
+Sort work by:
+- P1–P4 priority.
+- Risk score.
+- Structural significance.
+- Defect progression.
+- Occupancy and exposure.
+- Time overdue.
+- Estimated repair cost.
+- Division and building.
+
+Provide:
+- Risk-ranked list.
+- Filters.
+- Risk distribution charts.
+- Overdue items.
+- Recommended action.
+- Estimated cost.
+- Expected risk reduction.
+- Cost of deferral where a defensible estimate is available.
+
+Include explanations for every ranking.
+
+The system must clearly distinguish a computed priority from a qualified engineer's decision.
+
+# 25. BUDGET-AWARE MAINTENANCE PLANNING
+
+Build an annual maintenance planning module.
+
+Inputs:
+- Available budget in INR.
+- Candidate work orders.
+- Estimated repair cost.
+- Risk before repair.
+- Expected residual risk after repair.
+- Dependencies and mandatory safety work.
+- Optional grouping by division or location.
+
+Calculate:
+- Total proposed cost.
+- Budget remaining.
+- Expected risk reduction.
+- Number of P1–P4 items selected.
+- Deferred work.
+- Reasons for deferral.
+
+Implement a deterministic optimisation baseline that selects the repair set producing the greatest estimated risk reduction within the available budget, subject to mandatory safety constraints.
+
+Use a suitable integer optimisation library if compatible; otherwise implement and document a transparent heuristic.
+
+Mandatory safety work must not be silently excluded because of a limited budget. Flag funding gaps and escalate them.
+
+Display the selected plan, rejected candidates, cost breakdown, and risk reduction.
+
+Do not claim the plan is globally optimal unless the chosen algorithm actually establishes that result.
+
+# 26. DETERIORATION FORECASTING
+
+Create a predictive maintenance screen.
+
+Show:
+- Historical condition grades.
+- BCI trend.
+- Defect measurement trend.
+- Sensor trend.
+- Estimated future condition.
+- Suggested inspection interval.
+- Maintenance recommendation.
+- Confidence or uncertainty.
+- Data sufficiency warning.
+
+Support future Markov-chain condition-state models, Weibull survival curves, and gradient-boosted regression through replaceable interfaces.
+
+For the prototype, use a transparent baseline based on available historical observations, configurable assumptions, and deterministic projections.
+
+If historical data is insufficient, display “Insufficient data for a reliable forecast.”
+
+Never present illustrative projections as validated predictions or guaranteed failure dates.
+
+# 27. STATE AND DIVISION DASHBOARDS
+
+STATE DASHBOARD:
+- Total registered buildings.
+- Buildings inspected.
+- Average verified BCI.
+- Buildings by condition band.
+- Critical structural findings.
+- P1–P4 distribution.
+- Overdue work orders.
+- Maintenance budget.
+- Planned versus emergency maintenance.
+- Risk reduction achieved.
+- Division comparison.
+- District map.
+- Condition trends.
+- Construction quality alerts.
+
+DIVISION DASHBOARD:
+- Assigned buildings.
+- Pending inspections.
+- Unverified AI findings.
+- Critical defects.
+- Failed material tests.
+- Open work orders.
+- Overdue repairs.
+- Contractor performance.
+- Inspection compliance.
+- Upcoming maintenance.
+- Recent activities.
+
+All charts, counts, and KPIs must derive from the database or the shared demo dataset.
+
+Support clickable chart segments, date filters, district filters, division filters, and drill-down into underlying records.
+
+Use Leaflet and OpenStreetMap for maps.
+
+# 28. RECORDS VAULT AND AUDITABILITY
+
+Implement a central document and history repository.
+
+Support:
+- Drawings.
+- Inspection reports.
+- Material certificates.
+- NDT reports.
+- Repair records.
+- Construction quality documents.
+- Photographs.
+- Maintenance plans.
+- Certificates and handover documents.
+
+Features:
+- Search.
+- Filters.
+- Document categories.
+- Building and element linkage.
+- Preview and download.
+- Version history.
+- Upload metadata.
+- Permission checks.
+- Audit events.
+
+Create an audit history for:
+- Defect creation.
+- AI analysis.
+- Engineer verification.
+- Severity changes.
+- BCI changes.
+- Priority changes.
+- Work-order creation.
+- Contractor assignment.
+- Repair submission.
+- Repair approval or rejection.
+- Document changes.
+- Maintenance-plan decisions.
+
+Do not expose privileged records to unauthorised roles.
+
+For a production architecture, audit events must be written by trusted server-side code and protected against ordinary user modification.
+
+# 29. ALERTS AND NOTIFICATIONS
+
+Implement an in-app notification centre.
+
+Trigger notifications for:
+- New P1 defect.
+- Critical sensor alarm.
+- New occupant complaint.
+- Failed construction test.
+- Overdue inspection.
+- Overdue repair.
+- Work submitted for verification.
+- Repair rejected.
+- P1 safety escalation.
+- Maintenance plan requiring approval.
+
+Notifications should include:
+- Title.
+- Message.
+- Priority.
+- Related building.
+- Related record.
+- Timestamp.
+- Read status.
+- Navigation to the relevant screen.
+
+Create an abstraction for future SMS, email, and WhatsApp integrations.
+
+Do not claim these external messages were sent unless the corresponding provider is configured and the send operation succeeds.
+
+# 30. REPORTS AND EXPORTS
+
+Generate:
+1. Building Condition Report.
+2. Defect Register.
+3. Inspection Report.
+4. Rectification Work-Order Report.
+5. Construction Quality Report.
+6. Failed Material Test Register.
+7. Annual Maintenance Plan.
+8. Risk and Priority Report.
+9. Overdue Work Report.
+10. Post-Monsoon Condition Summary.
+11. Audit History Export.
+
+Reports should include:
+- BuildSense branding.
+- Building or division identity.
+- Report generation date.
+- Applied filters.
+- Tables.
+- Status indicators.
+- BCI and risk information.
+- Relevant photographs where practical.
+- Engineer verification status.
+- Clear disclaimers for provisional AI findings.
+
+Support PDF and CSV export where appropriate.
+
+The exports must contain the selected records rather than generic placeholder content.
+
+# 31. SECURITY AND DATA GOVERNANCE
+
+Implement security controls appropriate for the prototype and design clear production hardening points.
+
+Requirements:
+- Server-side secret management.
+- Role-based access control.
+- Backend validation.
+- Firestore security rules.
+- Storage permissions.
+- Input sanitisation.
+- File type and size restrictions.
+- Safe error messages.
+- Rate limiting for public reporting and AI analysis where supported.
+- Audit logging.
+- HTTPS in deployment.
+- Avoid logging private image data or secrets.
+- No real personal data in seed records.
+
+Separate demo mode from production mode.
+
+Never present demo authentication as secure production authentication.
+
+Do not embed a privileged service-account key in the frontend.
+
+If any requested production control cannot be completed in the generated application, document it explicitly.
+
+# 32. DEMONSTRATION DATA AND SCENARIOS
+
+Populate the system with realistic fictional Assam building records.
+
+Include:
+- Schools.
+- Hospitals.
+- Government offices.
+- Administrative buildings.
+- Public facilities.
+
+Create varied buildings with different condition bands.
+
+Include these demonstration scenarios:
+
+SCENARIO A — CRITICAL STRUCTURAL DEFECT:
+A suspected shear crack on a column in a public building. Show the provisional AI assessment, engineer verification, P1 override, urgent escalation, and work-order creation.
+
+SCENARIO B — ROOF LEAKAGE:
+An active leakage defect with photographs, repair assignment, contractor evidence, verification, and updated history.
+
+SCENARIO C — CONSTRUCTION QUALITY FAILURE:
+A failed material test that blocks stage approval until corrective action and authorised review.
+
+SCENARIO D — GROWING CRACK:
+Two observations of the same element with different verified measurements. Show the trend and explain the change.
+
+SCENARIO E — SENSOR ANOMALY:
+A tilt or crack-meter reading exceeds a configurable threshold. Show the alert and engineer acknowledgement.
+
+SCENARIO F — OCCUPANT COMPLAINT:
+An occupant submits a photograph of dampness. The division triages the complaint and links it to a defect.
+
+SCENARIO G — BUDGET PLANNING:
+A division has a limited annual maintenance budget. Show the selected repairs, deferred work, risk reduction, and mandatory safety funding gaps.
+
+SCENARIO H — REPAIR VERIFICATION:
+A contractor submits after-photographs. The engineer verifies or rejects the repair. The building's history and dashboard update appropriately.
+
+All sample data must be clearly labelled as fictional.
+
+# 33. DEMONSTRATION WORKFLOW
+
+Ensure the following complete workflow works in the application:
+
+1. Sign in using the demonstration role selector as JE.
+2. Open an assigned building.
+3. Start an inspection.
+4. Upload a defect photograph.
+5. Run Gemini-assisted image analysis.
+6. Review provisional findings.
+7. Edit and submit findings for engineer verification.
+8. Sign in as AE and verify the defect.
+9. Calculate the risk score and priority.
+10. Open the Building Health Passport.
+11. Raise a rectification work order.
+12. Assign the work order to a contractor.
+13. Sign in as contractor and submit repair progress and photographs.
+14. Sign in as AE and verify or reject the repair.
+15. Update the defect and repair history.
+16. Recalculate BCI using the configured rules.
+17. Open the EE dashboard and verify that its metrics update.
+18. Open the State Dashboard and view the aggregated records.
+19. Generate a PDF building-condition report.
+20. Demonstrate the occupant complaint workflow and construction quality workflow.
+
+Persist changes so the workflow remains functional after page navigation and browser refresh.
+
+# 34. TESTING AND ACCEPTANCE CRITERIA
+
+After implementation, run the application and test it.
+
+Verify:
+- Application starts without build errors.
+- All navigation items open valid screens.
+- Role permissions are enforced by the backend.
+- Building records can be created and updated.
+- AI analysis accepts valid images and handles errors.
+- AI findings remain provisional until verified.
+- Risk calculations match the specified formula.
+- P1 override works correctly.
+- BCI calculations are consistent and documented.
+- Duplicate observations are not counted as separate active defects.
+- Work-order transitions enforce valid states.
+- Contractor access is restricted to assigned work.
+- Repair verification updates linked records.
+- Construction stage gates respect failed mandatory tests.
+- Search and filters operate on real records.
+- Dashboard metrics match the database.
+- PDF and CSV exports contain actual selected data.
+- Data remains available after refresh.
+- Offline drafts survive refresh and can be queued for synchronization.
+- Failed synchronization is visible and retryable.
+- No API keys or privileged credentials appear in browser bundles.
+- Empty, loading, error, and success states are implemented.
+- Responsive layouts work on desktop and mobile.
+
+Fix detected build errors and broken interactions before declaring the prototype ready.
+
+# 35. IMPLEMENTATION PRIORITIES
+
+Build the application in this order while keeping the codebase coherent:
+
+Priority 1:
+- Shared application layout.
+- Authentication and role selector.
+- Building registry.
+- Persistent database.
+- Building Health Passport.
+- Defect records.
+- Gemini image analysis.
+- Risk scoring and BCI.
+- Work orders.
+- Engineer verification.
+- Functional dashboards.
+
+Priority 2:
+- Construction quality.
+- Occupant reporting.
+- Document repository.
+- PDF/CSV reporting.
+- Audit trail.
+- Notifications.
+
+Priority 3:
+- Offline-first inspection drafts.
+- Sensor monitoring.
+- Thermal and NDT workflows.
+- Change detection.
+- Forecasting.
+- Budget optimisation.
+- Model registry and specialist AI integration adapters.
+
+Do not create empty placeholder pages for lower-priority modules. Implement a functional baseline for every major module and expand it according to this priority order.
+
+If time or tool limits require compromises, preserve the full navigation and data architecture, make the primary end-to-end workflow fully functional, and clearly identify any unfinished advanced capability.
+
+# 36. FINAL INSTRUCTIONS
+
+Build the actual application now.
+
+Do not respond with an implementation plan instead of building.
+
+Do not stop after the dashboard.
+
+Do not replace functional workflows with screenshots.
+
+Do not use random numbers for calculated metrics.
+
+Do not silently fabricate model performance, model training, sensor connections, or external integrations.
+
+Use real Gemini image analysis where configured and transparent fallback behavior otherwise.
+
+Use persistent storage and a shared data model.
+
+Implement working interactions, validation, error handling, responsive layouts, and a consistent visual system.
+
+After building, run the available checks, fix issues, and provide:
+- A working preview.
+- A summary of implemented modules.
+- The actual technology stack used.
+- Any configuration still required.
+- Any capabilities simulated rather than operational.
+- Any production security or infrastructure work still outstanding.
+
+The final result should be a coherent, stakeholder-ready BuildSense prototype demonstrating AI-assisted building condition monitoring, construction quality assurance, risk-based maintenance, and predictive asset management.
