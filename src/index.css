@@ -1,1 +1,96 @@
 @import "tailwindcss";
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+#app-main {
+  overflow-wrap: break-word;
+}
+
+#app-main h1,
+#app-main h2,
+#app-main h3,
+#app-main p {
+  min-width: 0;
+}
+
+#app-main input,
+#app-main select,
+#app-main textarea {
+  max-width: 100%;
+}
+
+#app-main .overflow-x-auto > table {
+  min-width: 44rem;
+}
+
+.sidebar-scroll,
+.main-scroll,
+.chip-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.sidebar-scroll {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198, 225, 61, 0.7) rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(198, 225, 61, 0.55);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: #c6e13d;
+  background-clip: padding-box;
+}
+
+.main-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 transparent;
+}
+
+.main-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.main-scroll::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.chip-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198, 225, 61, 0.45) transparent;
+}
+
+.chip-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.chip-scroll::-webkit-scrollbar-thumb {
+  background: rgba(198, 225, 61, 0.45);
+  border-radius: 999px;
+}

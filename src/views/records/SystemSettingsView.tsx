@@ -61,7 +61,7 @@ export const SystemSettingsView: React.FC = () => {
 
           <div className="space-y-2">
             <span className="font-bold text-slate-700 block">Severity Deductions (Points deducted per defect):</span>
-            <div className="grid grid-cols-5 gap-2 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-center">
               <div className="p-2 bg-slate-50 rounded-lg">
                 <span className="block text-[10px] text-slate-400">G1 Negligible</span>
                 <strong>-1.5</strong>
@@ -87,7 +87,7 @@ export const SystemSettingsView: React.FC = () => {
 
           <div className="space-y-2 pt-2 border-t border-slate-100">
             <span className="font-bold text-slate-700 block">Structural Class Multipliers:</span>
-            <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center">
               <div className="p-2 bg-indigo-50 rounded-lg border border-indigo-100 text-indigo-900">
                 <span className="block text-[10px]">Primary Structure</span>
                 <strong>2.0x Multiplier</strong>

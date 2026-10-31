@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Building2, 
   LayoutDashboard, 
@@ -51,6 +51,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
   const [notifMenuOpen, setNotifMenuOpen] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncFeedback, setSyncFeedback] = useState<string | null>(null);
+
+  useEffect(() => {
+    const closeDrawerOnDesktop = () => {
+      if (window.innerWidth >= 1024) setMobileMenuOpen(false);
+    };
+    window.addEventListener('resize', closeDrawerOnDesktop);
+    return () => window.removeEventListener('resize', closeDrawerOnDesktop);
+  }, []);
 
   const unreadNotifs = notifications.filter((n) => !n.read);
   const criticalDefectsCount = defects.filter((d) => d.priorityBand === 'P1').length;
@@ -146,12 +154,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
+    <div className="h-dvh max-h-dvh overflow-hidden bg-slate-50 flex flex-col font-sans text-slate-800">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-black border-b border-white/10 text-white shadow-md">
-        <div className="flex items-center justify-between px-4 h-16">
+      <header className="shrink-0 z-40 bg-black border-b border-white/10 text-white shadow-md">
+        <div className="flex items-center justify-between gap-2 px-3 sm:px-4 h-14 sm:h-16">
           {/* Logo & Product Identity */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="hidden lg:flex p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
@@ -160,27 +168,32 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
               <Menu className="w-5 h-5" />
             </button>
             <button
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={() => {
+                setMobileMenuOpen(true);
+                setNotifMenuOpen(false);
+                setRoleMenuOpen(false);
+              }}
               className="lg:hidden p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 cursor-pointer"
+              aria-label="Open navigation"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             <div
               onClick={() => onNavigate('/home')}
-              className="flex items-center gap-2.5 cursor-pointer select-none"
+              className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none min-w-0"
             >
-              <div className="w-9 h-9 rounded-xl bg-black border border-[#c6e13d]/60 flex items-center justify-center shadow-[0_0_12px_rgba(198,225,61,0.25)]">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-xl bg-black border border-[#c6e13d]/60 flex items-center justify-center shadow-[0_0_12px_rgba(198,225,61,0.25)]">
                 <Building2 className="w-5 h-5 text-[#c6e13d]" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-base tracking-tight text-white">BUILDSENSE</span>
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#c6e13d]/15 text-[#c6e13d] border border-[#c6e13d]/40">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="font-extrabold text-sm sm:text-base tracking-tight text-white truncate">BUILDSENSE</span>
+                  <span className="hidden lg:inline shrink-0 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#c6e13d]/15 text-[#c6e13d] border border-[#c6e13d]/40">
                     Enterprise Edition
                   </span>
                 </div>
-                <p className="text-[10.5px] text-white/70 font-medium hidden sm:block">
+                <p className="text-[10.5px] text-white/70 font-medium hidden xl:block truncate">
                   AI-Powered Building Condition Monitoring & Predictive Maintenance
                 </p>
               </div>
@@ -188,7 +201,19 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
           </div>
 
           {/* Right Header Controls */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {pendingSyncCount > 0 && (
+              <button
+                onClick={handleManualSync}
+                disabled={syncing}
+                title={`${pendingSyncCount} drafts waiting to sync`}
+                className="md:hidden flex items-center gap-1 bg-[#c6e13d]/20 text-[#c6e13d] border border-[#c6e13d]/40 px-1.5 py-1 rounded-lg text-[11px] font-bold cursor-pointer"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`} />
+                {pendingSyncCount}
+              </button>
+            )}
+
             {/* Offline Sync Indicator */}
             <div className="hidden md:flex items-center gap-2 bg-[#121212] border border-white/10 px-2.5 py-1 rounded-lg text-xs">
               <span className="flex items-center gap-1.5 text-[#c6e13d] font-semibold">
@@ -223,7 +248,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
               </button>
 
               {notifMenuOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-black rounded-xl shadow-2xl border border-white/15 text-white z-50 overflow-hidden animate-in fade-in zoom-in-95">
+                <div className="absolute right-0 mt-2 w-[min(24rem,calc(100vw-1.5rem))] sm:w-96 max-h-[min(28rem,70dvh)] bg-black rounded-xl shadow-2xl border border-white/15 text-white z-50 overflow-hidden animate-in fade-in zoom-in-95">
                   <div className="p-3 bg-[#0c0c0c] border-b border-white/10 text-white flex items-center justify-between">
                     <span className="font-bold text-sm text-white">Actionable Notifications</span>
                     <span className="text-xs text-[#c6e13d] font-mono font-bold">{unreadNotifs.length} unread</span>
@@ -272,7 +297,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
             <div className="relative">
               <button
                 onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                className="flex items-center gap-2.5 bg-[#121212] hover:bg-[#1c1c1c] border border-white/10 hover:border-[#c6e13d]/40 py-1.5 px-3 rounded-xl transition-all cursor-pointer text-left"
+                className="flex items-center gap-2 sm:gap-2.5 bg-[#121212] hover:bg-[#1c1c1c] border border-white/10 hover:border-[#c6e13d]/40 py-1 px-1.5 sm:py-1.5 sm:px-3 rounded-xl transition-all cursor-pointer text-left"
               >
                 <img
                   src={currentUser.avatar}
@@ -291,7 +316,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
               </button>
 
               {roleMenuOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-black rounded-xl shadow-2xl border border-white/15 text-white z-50 overflow-hidden animate-in fade-in zoom-in-95">
+                <div className="absolute right-0 mt-2 w-[min(20rem,calc(100vw-1.5rem))] bg-black rounded-xl shadow-2xl border border-white/15 text-white z-50 overflow-hidden animate-in fade-in zoom-in-95">
                   <div className="p-3 bg-[#0c0c0c] border-b border-white/10 text-white">
                     <div className="text-xs font-bold uppercase tracking-wider text-[#c6e13d]">
                       Switch Role (Specification Section 4)
@@ -340,19 +365,23 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
 
       {/* Sync feedback notification banner if active */}
       {syncFeedback && (
-        <div className="bg-emerald-600 text-white text-xs py-1.5 px-4 text-center font-medium shadow-xs">
+        <div className="shrink-0 bg-emerald-600 text-white text-xs py-1.5 px-4 text-center font-medium shadow-xs">
           {syncFeedback}
         </div>
       )}
 
-      {/* Main Layout Container */}
-      <div className="flex flex-1 overflow-hidden">
+      {/* Main Layout Container — sidebar and page scroll independently */}
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Desktop Sidebar */}
         <aside
           className={`${
-            sidebarOpen ? 'w-64' : 'w-0 -ml-64'
-          } hidden lg:block bg-black border-r border-white/10 text-white transition-all duration-200 overflow-y-auto flex-shrink-0 select-none`}
+            sidebarOpen ? 'w-60 xl:w-64 border-r border-white/10' : 'w-0 border-transparent'
+          } hidden lg:flex flex-col h-full min-h-0 shrink-0 overflow-hidden bg-black text-white transition-[width] duration-200 select-none`}
         >
+          <nav
+            aria-label="Primary"
+            className="sidebar-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain"
+          >
           <div className="p-3 space-y-5">
             {navGroups.map((group) => (
               <div key={group.title}>
@@ -395,13 +424,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
               </div>
             ))}
           </div>
+          </nav>
         </aside>
 
         {/* Mobile Slide-out Drawer */}
         {mobileMenuOpen && (
           <div className="fixed inset-0 z-50 flex lg:hidden bg-black/80 backdrop-blur-xs">
-            <div className="w-72 bg-black text-white h-full flex flex-col p-4 overflow-y-auto border-r border-white/10">
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+            <div className="w-[min(18rem,86vw)] bg-black text-white h-full min-h-0 flex flex-col border-r border-white/10">
+              <div className="flex items-center justify-between p-4 border-b border-white/10 shrink-0">
                 <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#c6e13d]"></span>
                   Navigation
@@ -409,11 +439,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-1 rounded text-white/60 hover:text-white"
+                  aria-label="Close navigation"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="mt-4 space-y-4 flex-1">
+              <div className="sidebar-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain p-4 space-y-4">
                 {navGroups.map((group) => (
                   <div key={group.title}>
                     <div className="text-[10px] font-black text-white/40 uppercase tracking-wider mb-1">
@@ -456,57 +487,57 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ currentRoute, onNavigate, 
         )}
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-slate-50 pb-16 lg:pb-6">
+        <main id="app-main" className="main-scroll flex-1 min-w-0 min-h-0 h-full overflow-y-auto overflow-x-hidden bg-slate-50">
           {children}
         </main>
       </div>
 
       {/* Mobile Bottom Navigation for Field Inspector Ergonomics (Section 3) */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 text-white px-2 py-1.5 flex items-center justify-around text-[10px] font-medium shadow-lg">
+      <nav className="lg:hidden shrink-0 z-40 bg-slate-900 border-t border-slate-800 text-white px-1 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))] grid grid-cols-5 text-[10px] font-medium shadow-lg">
         <button
           onClick={() => onNavigate('/home')}
-          className={`flex flex-col items-center gap-0.5 p-1 ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 min-w-0 px-0.5 ${
             currentRoute === '/home' ? 'text-blue-400 font-bold' : 'text-slate-400'
           }`}
         >
-          <Building2 className="w-4 h-4" />
-          <span>Home</span>
+          <Building2 className="w-4 h-4 shrink-0" />
+          <span className="leading-tight text-center">Home</span>
         </button>
         <button
           onClick={() => onNavigate('/buildings')}
-          className={`flex flex-col items-center gap-0.5 p-1 ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 min-w-0 px-0.5 ${
             currentRoute === '/buildings' ? 'text-blue-400 font-bold' : 'text-slate-400'
           }`}
         >
-          <MapPin className="w-4 h-4" />
-          <span>Assets</span>
+          <MapPin className="w-4 h-4 shrink-0" />
+          <span className="leading-tight text-center">Assets</span>
         </button>
         <button
           onClick={() => onNavigate('/field-inspection')}
-          className={`flex flex-col items-center gap-0.5 p-1 ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 min-w-0 px-0.5 ${
             currentRoute === '/field-inspection' ? 'text-blue-400 font-bold' : 'text-slate-400'
           }`}
         >
-          <ClipboardCheck className="w-4 h-4" />
-          <span>Field Insp</span>
+          <ClipboardCheck className="w-4 h-4 shrink-0" />
+          <span className="leading-tight text-center">Inspect</span>
         </button>
         <button
           onClick={() => onNavigate('/ai-defect-analysis')}
-          className={`flex flex-col items-center gap-0.5 p-1 ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 min-w-0 px-0.5 ${
             currentRoute === '/ai-defect-analysis' ? 'text-blue-400 font-bold' : 'text-slate-400'
           }`}
         >
-          <Cpu className="w-4 h-4" />
-          <span>AI Vision</span>
+          <Cpu className="w-4 h-4 shrink-0" />
+          <span className="leading-tight text-center">AI Vision</span>
         </button>
         <button
           onClick={() => onNavigate('/work-orders')}
-          className={`flex flex-col items-center gap-0.5 p-1 ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 min-w-0 px-0.5 ${
             currentRoute === '/work-orders' ? 'text-blue-400 font-bold' : 'text-slate-400'
           }`}
         >
-          <Wrench className="w-4 h-4" />
-          <span>Work Orders</span>
+          <Wrench className="w-4 h-4 shrink-0" />
+          <span className="leading-tight text-center">Orders</span>
         </button>
       </nav>
     </div>

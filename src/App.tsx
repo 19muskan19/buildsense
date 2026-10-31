@@ -60,7 +60,8 @@ export function AppContent() {
   const navigateTo = (route: string) => {
     window.location.hash = route;
     setCurrentRoute(route);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const main = document.getElementById('app-main');
+    if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenPassport = (buildingId: string) => {

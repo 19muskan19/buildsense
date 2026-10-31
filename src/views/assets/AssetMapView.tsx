@@ -82,7 +82,7 @@ export const AssetMapView: React.FC<AssetMapViewProps> = ({ onOpenPassport }) =>
   }, [filteredBuildings]);
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-4 flex flex-col h-[calc(100vh-130px)]">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto w-full space-y-4 flex flex-col min-h-[32rem] h-[calc(100dvh-11rem)] lg:h-[calc(100dvh-13rem)]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
         <div>
           <h1 className="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -94,11 +94,11 @@ export const AssetMapView: React.FC<AssetMapViewProps> = ({ onOpenPassport }) =>
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
           <select
             value={divisionFilter}
             onChange={(e) => setDivisionFilter(e.target.value)}
-            className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 font-medium"
+            className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 font-medium w-full sm:w-auto max-w-full"
           >
             <option value="ALL">All Divisions</option>
             {divisions.map((d) => (
@@ -109,7 +109,7 @@ export const AssetMapView: React.FC<AssetMapViewProps> = ({ onOpenPassport }) =>
           <select
             value={bandFilter}
             onChange={(e) => setBandFilter(e.target.value)}
-            className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 font-medium"
+            className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 font-medium w-full sm:w-auto max-w-full"
           >
             <option value="ALL">All Condition Bands</option>
             <option value="Good">Good (85-100)</option>
@@ -121,7 +121,7 @@ export const AssetMapView: React.FC<AssetMapViewProps> = ({ onOpenPassport }) =>
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs relative">
+      <div className="flex-1 min-h-[280px] bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs relative">
         <div ref={mapContainerRef} className="w-full h-full z-0" />
       </div>
     </div>

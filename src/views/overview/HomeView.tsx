@@ -57,13 +57,13 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-md border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-6 text-white shadow-md border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold mb-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             BuildSense Operations Center
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-tight">
             Building Condition & Preventive Asset Management
           </h1>
           <p className="text-sm text-slate-300 mt-1 max-w-2xl">
@@ -134,8 +134,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
       </div>
 
       {/* End-to-End Operational Lifecycle Pipeline (Section 1) */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
           <div>
             <h2 className="text-base font-bold text-slate-900">
               End-to-End Asset Management Lifecycle
@@ -144,7 +144,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
               Transforming maintenance from reactive ad-hoc repairs into risk-based proactive planning
             </p>
           </div>
-          <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+          <span className="self-start shrink-0 text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
             10-Stage Pipeline
           </span>
         </div>
@@ -185,19 +185,19 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Urgent Structural Risks */}
         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-100">
+          <div className="flex items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div className="flex items-start gap-2 min-w-0">
+              <span className="p-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-100 shrink-0">
                 <AlertTriangle className="w-4 h-4" />
               </span>
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-sm font-bold text-slate-900">Urgent Safety-Critical Defects (P1 / Override)</h3>
                 <p className="text-xs text-slate-500">Requires engineer intervention within 24–72 hours</p>
               </div>
             </div>
             <button
               onClick={() => onNavigate('/defects')}
-              className="text-xs text-blue-600 font-semibold hover:underline"
+              className="shrink-0 text-xs text-blue-600 font-semibold hover:underline"
             >
               View All
             </button>
@@ -205,9 +205,9 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
 
           <div className="divide-y divide-slate-100 flex-1">
             {criticalDefects.slice(0, 4).map((d) => (
-              <div key={d.id} className="py-3 flex items-start justify-between gap-3 text-xs">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
+              <div key={d.id} className="py-3 flex items-start justify-between gap-2 text-xs">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
                     <span className="font-bold text-slate-900">{d.buildingName}</span>
                     <PriorityBadge band={d.priorityBand} isOverride={d.isP1Override} />
                   </div>
@@ -234,19 +234,19 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
 
         {/* Buildings Requiring Immediate Attention */}
         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-amber-50 text-amber-600 border border-amber-100">
+          <div className="flex items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div className="flex items-start gap-2 min-w-0">
+              <span className="p-1.5 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 shrink-0">
                 <Building2 className="w-4 h-4" />
               </span>
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-sm font-bold text-slate-900">Priority Building Condition Watchlist</h3>
                 <p className="text-xs text-slate-500">Assam facilities in Very Poor & Poor condition bands</p>
               </div>
             </div>
             <button
               onClick={() => onNavigate('/buildings')}
-              className="text-xs text-blue-600 font-semibold hover:underline"
+              className="shrink-0 text-xs text-blue-600 font-semibold hover:underline"
             >
               Full Registry
             </button>
@@ -257,15 +257,15 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
               .filter((b) => b.conditionBand === 'Very Poor' || b.conditionBand === 'Poor')
               .slice(0, 4)
               .map((b) => (
-                <div key={b.id} className="py-3 flex items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-3">
+                <div key={b.id} className="py-3 flex items-start justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-3 min-w-0">
                     <img
                       src={b.photoUrl}
                       alt={b.name}
                       className="w-10 h-10 rounded-lg object-cover ring-1 ring-slate-200 flex-shrink-0"
                     />
-                    <div>
-                      <div className="font-bold text-slate-900 hover:text-blue-600 cursor-pointer" onClick={() => onOpenPassport(b.id)}>
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-900 hover:text-blue-600 cursor-pointer break-words" onClick={() => onOpenPassport(b.id)}>
                         {b.name}
                       </div>
                       <div className="text-slate-500 text-[11px]">
@@ -273,7 +273,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenPassport }
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right shrink-0">
                     <ConditionBadge band={b.conditionBand} score={b.currentBCI} />
                     <div className="mt-1">
                       <button

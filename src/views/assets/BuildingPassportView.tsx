@@ -69,20 +69,20 @@ export const BuildingPassportView: React.FC<BuildingPassportViewProps> = ({ buil
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
       {/* Top Navigation & Action Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-3 min-w-0">
           <button
             onClick={onBack}
-            className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
+            className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer shrink-0"
             title="Back to Registry"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
                 {building.buildingCode}
               </span>
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">{building.name}</h1>
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 break-words">{building.name}</h1>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
               Digital Structural Health Passport • {building.district} Division
@@ -90,10 +90,10 @@ export const BuildingPassportView: React.FC<BuildingPassportViewProps> = ({ buil
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto">
           <button
             onClick={handleExportPDF}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs cursor-pointer"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs cursor-pointer"
           >
             <Download className="w-4 h-4" />
             Download Condition Report (PDF)
@@ -102,7 +102,7 @@ export const BuildingPassportView: React.FC<BuildingPassportViewProps> = ({ buil
       </div>
 
       {/* Building Summary Header Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
           {/* Photo */}
           <div className="lg:col-span-1 h-44 rounded-xl overflow-hidden ring-1 ring-slate-200">
@@ -115,7 +115,7 @@ export const BuildingPassportView: React.FC<BuildingPassportViewProps> = ({ buil
 
           {/* Core Info */}
           <div className="lg:col-span-2 space-y-2 text-xs">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <ConditionBadge band={building.conditionBand} score={building.currentBCI} />
               <span className="font-semibold text-slate-700">{building.buildingType} Facility</span>
               <span>•</span>
@@ -247,9 +247,9 @@ export const BuildingPassportView: React.FC<BuildingPassportViewProps> = ({ buil
             <h3 className="text-sm font-bold text-slate-900 mb-3">Active Structural & Envelope Defect Summary</h3>
             <div className="divide-y divide-slate-100">
               {bDefects.map((def) => (
-                <div key={def.id} className="py-3 flex items-start justify-between gap-3 text-xs">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
+                <div key={def.id} className="py-3 flex items-start justify-between gap-2 text-xs">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-1">
                       <span className="font-bold text-slate-900">{def.elementCode} ({def.elementType})</span>
                       <PriorityBadge band={def.priorityBand} isOverride={def.isP1Override} />
                       <DefectStatusBadge status={def.status} engineerVerified={def.engineerVerified} />

@@ -211,11 +211,11 @@ export const StateDashboardView: React.FC<StateDashboardViewProps> = ({ onOpenPa
             </div>
 
             {/* Quick Filters */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
               <select
                 value={selectedDivisionFilter}
                 onChange={(e) => setSelectedDivisionFilter(e.target.value)}
-                className="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 font-medium"
+                className="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 font-medium w-full sm:w-auto max-w-full"
               >
                 <option value="ALL">All Divisions</option>
                 {divisions.map((d) => (
@@ -226,7 +226,7 @@ export const StateDashboardView: React.FC<StateDashboardViewProps> = ({ onOpenPa
               <select
                 value={selectedBandFilter}
                 onChange={(e) => setSelectedBandFilter(e.target.value)}
-                className="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 font-medium"
+                className="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 font-medium w-full sm:w-auto max-w-full"
               >
                 <option value="ALL">All Bands</option>
                 <option value="Good">Good (85-100)</option>

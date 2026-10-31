@@ -120,10 +120,10 @@ export const ScenarioLauncher: React.FC<ScenarioLauncherProps> = ({ onSelectRout
   };
 
   return (
-    <div className="bg-black border-y border-white/10 text-white py-3 px-4 shadow-2xl relative select-none">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-2.5">
-          <div className="flex items-center gap-2 flex-wrap">
+    <div className="bg-black border-y border-white/10 text-white py-2.5 sm:py-3 px-3 sm:px-4 shadow-2xl relative select-none overflow-hidden">
+      <div className="max-w-7xl mx-auto min-w-0">
+        <div className="flex items-start sm:items-center justify-between gap-2 mb-2.5">
+          <div className="flex items-center gap-2 flex-wrap min-w-0">
             <span className="p-1 rounded bg-[#c6e13d]/15 text-[#c6e13d] border border-[#c6e13d]/30 shadow-[0_0_8px_rgba(198,225,61,0.2)]">
               <Sparkles className="w-3.5 h-3.5 text-[#c6e13d]" />
             </span>
@@ -140,14 +140,14 @@ export const ScenarioLauncher: React.FC<ScenarioLauncherProps> = ({ onSelectRout
           {activeScenario && (
             <button
               onClick={() => setActiveScenario(null)}
-              className="text-[11px] font-semibold text-white/70 hover:text-[#c6e13d] underline transition-colors cursor-pointer"
+              className="shrink-0 text-[11px] font-semibold text-white/70 hover:text-[#c6e13d] underline transition-colors cursor-pointer whitespace-nowrap"
             >
               Reset Scenario Highlight
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+        <div className="chip-scroll flex gap-2 overflow-x-auto overscroll-x-contain pb-1 snap-x snap-mandatory lg:grid lg:grid-cols-8 lg:overflow-visible lg:pb-0">
           {SCENARIO_LIST.map((sc) => {
             const Icon = sc.icon;
             const isCurrent = activeScenario === sc.id;
@@ -155,7 +155,7 @@ export const ScenarioLauncher: React.FC<ScenarioLauncherProps> = ({ onSelectRout
               <button
                 key={sc.id}
                 onClick={() => handleLaunch(sc)}
-                className={`flex flex-col text-left p-2.5 rounded-xl border transition-all text-xs cursor-pointer group ${
+                className={`flex flex-col text-left p-2.5 rounded-xl border transition-all text-xs cursor-pointer group min-w-[9.5rem] max-w-[11.5rem] shrink-0 snap-start lg:min-w-0 lg:max-w-none ${
                   isCurrent
                     ? 'bg-[#151515] border-[#c6e13d] text-white ring-2 ring-[#c6e13d]/50 shadow-[0_0_16px_rgba(198,225,61,0.25)]'
                     : 'bg-[#0d0d0d] hover:bg-[#181818] border-white/10 hover:border-[#c6e13d]/50 text-white'

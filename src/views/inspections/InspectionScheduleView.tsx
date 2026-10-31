@@ -84,13 +84,13 @@ export const InspectionScheduleView: React.FC<{ onNavigate: (route: string) => v
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0">
           <span className="text-xs font-bold text-slate-600">Status Filter:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 font-medium"
+            className="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 font-medium w-full sm:w-auto max-w-full"
           >
             <option value="ALL">All Inspections</option>
             <option value="Scheduled">Scheduled</option>
