@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import * as api from '../services/api';
+import * as portfolio from '../services/localStore';
 import {
   Building,
   Division,
@@ -66,22 +67,22 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [buildings, setBuildings] = useState<Building[]>([]);
-  const [divisions, setDivisions] = useState<Division[]>([]);
-  const [elements, setElements] = useState<Element[]>([]);
-  const [defects, setDefects] = useState<Defect[]>([]);
-  const [workOrders, setWorkOrders] = useState<WorkOrder[]>([]);
-  const [inspections, setInspections] = useState<Inspection[]>([]);
-  const [constructionProjects, setConstructionProjects] = useState<ConstructionProject[]>([]);
-  const [qualityChecks, setQualityChecks] = useState<QualityCheck[]>([]);
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
-  const [sensors, setSensors] = useState<Sensor[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
-  const [models, setModels] = useState<ModelRegistryItem[]>([]);
-  const [documents, setDocuments] = useState<BuildingDocument[]>([]);
-  const [maintenancePlans, setMaintenancePlans] = useState<MaintenancePlan[]>([]);
-  const [systemConfig, setSystemConfig] = useState<SystemConfig | null>(null);
+  const [buildings, setBuildings] = useState<Building[]>(() => portfolio.listBuildings());
+  const [divisions, setDivisions] = useState<Division[]>(() => portfolio.listDivisions());
+  const [elements, setElements] = useState<Element[]>(() => portfolio.listElements());
+  const [defects, setDefects] = useState<Defect[]>(() => portfolio.listDefects());
+  const [workOrders, setWorkOrders] = useState<WorkOrder[]>(() => portfolio.listWorkOrders());
+  const [inspections, setInspections] = useState<Inspection[]>(() => portfolio.listInspections());
+  const [constructionProjects, setConstructionProjects] = useState<ConstructionProject[]>(() => portfolio.listConstructionProjects());
+  const [qualityChecks, setQualityChecks] = useState<QualityCheck[]>(() => portfolio.listQualityChecks());
+  const [complaints, setComplaints] = useState<Complaint[]>(() => portfolio.listComplaints());
+  const [sensors, setSensors] = useState<Sensor[]>(() => portfolio.listSensors());
+  const [notifications, setNotifications] = useState<Notification[]>(() => portfolio.listNotifications());
+  const [auditEvents, setAuditEvents] = useState<AuditEvent[]>(() => portfolio.listAuditEvents());
+  const [models, setModels] = useState<ModelRegistryItem[]>(() => portfolio.listModels());
+  const [documents, setDocuments] = useState<BuildingDocument[]>(() => portfolio.listDocuments());
+  const [maintenancePlans, setMaintenancePlans] = useState<MaintenancePlan[]>(() => portfolio.listMaintenancePlans());
+  const [systemConfig, setSystemConfig] = useState<SystemConfig | null>(() => portfolio.getSettings());
 
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
 

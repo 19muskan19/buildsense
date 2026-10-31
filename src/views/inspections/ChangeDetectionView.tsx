@@ -18,6 +18,14 @@ export const ChangeDetectionView: React.FC = () => {
 
   // Defect 3 is the primary growing crack Scenario D
   const targetDefect = defects.find((d) => d.id === 'def-003') || defects[0];
+  if (!targetDefect) {
+    return (
+      <div className="p-6 max-w-3xl mx-auto space-y-2">
+        <h1 className="text-xl font-bold text-slate-900">Change detection</h1>
+        <p className="text-sm text-slate-600">No defect observations are on record for a repeat comparison.</p>
+      </div>
+    );
+  }
   const observations = INITIAL_DEFECT_OBSERVATIONS.filter((o) => o.defectId === targetDefect.id);
 
   const obsA = observations[0];

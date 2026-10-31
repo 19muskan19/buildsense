@@ -16,6 +16,7 @@ import {
 import { useData } from '../../context/DataContext';
 import { useAuth } from '../../context/AuthContext';
 import { saveOfflineDraft, getOfflineDrafts } from '../../services/offlineSync';
+import { syncOfflineInspections } from '../../services/api';
 
 export const FieldInspectionView: React.FC<{ onNavigate: (route: string) => void }> = ({ onNavigate }) => {
   const { buildings, elements } = useData();
@@ -69,26 +70,19 @@ export const FieldInspectionView: React.FC<{ onNavigate: (route: string) => void
   const handleSubmitOnline = async () => {
     setStatusMessage('Submitting field inspection directly to central server...');
     try {
-      const res = await fetch('/api/sync/offline-inspections', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          drafts: [{
-            buildingId: selectedBuildingId,
-            buildingName: selectedBuilding?.name || '',
-            elementId: selectedElementId,
-            inspectorId: currentUser.id,
-            inspectorName: currentUser.name,
-            inspectionMethod,
-            inspectionDate: new Date().toISOString(),
-            weather,
-            checklistResults: checklist,
-            photoIds: [photoUrl],
-            summaryNotes
-          }]
-        })
-      });
-      const data = await res.json();
+      const data = await syncOfflineInspections([{
+        buildingId: selectedBuildingId,
+        buildingName: selectedBuilding?.name || '',
+        elementId: selectedElementId,
+        inspectorId: currentUser.id,
+        inspectorName: currentUser.name,
+        inspectionMethod,
+        inspectionDate: new Date().toISOString(),
+        weather,
+        checklistResults: checklist,
+        photoIds: [photoUrl],
+        summaryNotes
+      }]);
       if (data.success) {
         setStatusMessage('Inspection submitted successfully! Forwarded to Assistant Engineer for verification.');
         setTimeout(() => {

@@ -32,6 +32,14 @@ export const DivisionDashboardView: React.FC<DivisionDashboardViewProps> = ({ on
   );
 
   const currentDiv = divisions.find((d) => d.id === selectedDivisionId) || divisions[0];
+  if (!currentDiv) {
+    return (
+      <div className="p-6 max-w-3xl mx-auto space-y-2">
+        <h1 className="text-xl font-bold text-slate-900">Division dashboard</h1>
+        <p className="text-sm text-slate-600">No division records are available to summarise.</p>
+      </div>
+    );
+  }
   const divBuildings = buildings.filter((b) => b.divisionId === currentDiv.id);
   const divBuildingIds = divBuildings.map((b) => b.id);
 

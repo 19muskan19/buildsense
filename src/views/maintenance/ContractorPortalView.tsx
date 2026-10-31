@@ -19,9 +19,12 @@ export const ContractorPortalView: React.FC = () => {
   const { currentUser } = useAuth();
 
   // Contractor sees assigned work orders
-  const contractorWOs = workOrders.filter(
-    (w) => w.contractorName.includes('Brahmaputra') || w.contractorName.includes('Pragati')
+  const assignedToUser = workOrders.filter(
+    (w) =>
+      w.contractorId === currentUser.id ||
+      (currentUser.contractorCompany ? w.contractorName.includes(currentUser.contractorCompany) : false)
   );
+  const contractorWOs = assignedToUser.length > 0 ? assignedToUser : workOrders;
 
   const [activeWO, setActiveWO] = useState<WorkOrder>(contractorWOs[0] || workOrders[0]);
   const [progressVal, setProgressVal] = useState<number>(activeWO ? activeWO.progressPercent : 50);

@@ -7,6 +7,14 @@ export const StageGateView: React.FC<{ onNavigate: (route: string) => void }> = 
   const [selectedProjectId, setSelectedProjectId] = useState(constructionProjects[0]?.id || 'prj-001');
 
   const selectedPrj = constructionProjects.find((p) => p.id === selectedProjectId) || constructionProjects[0];
+  if (!selectedPrj) {
+    return (
+      <div className="p-6 max-w-3xl mx-auto space-y-2">
+        <h1 className="text-xl font-bold text-slate-900">Stage-gate inspections</h1>
+        <p className="text-sm text-slate-600">No construction projects are on record.</p>
+      </div>
+    );
+  }
 
   const STAGES = [
     { name: '1. Foundation & Sub-base', status: 'Passed', test: 'Standard Penetration Test & Soil Bearing Capacity' },

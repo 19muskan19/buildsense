@@ -160,9 +160,34 @@ export function AppContent() {
 
   return (
     <AppLayout currentRoute={currentRoute} onNavigate={navigateTo}>
-      {renderCurrentView()}
+      <ScreenBoundary key={currentRoute}>
+        {renderCurrentView()}
+      </ScreenBoundary>
     </AppLayout>
   );
+}
+
+class ScreenBoundary extends React.Component<
+  { children: React.ReactNode },
+  { message: string | null }
+> {
+  state = { message: null as string | null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { message: error.message || 'This screen failed to render.' };
+  }
+
+  render() {
+    if (this.state.message) {
+      return (
+        <div className="p-6 max-w-3xl mx-auto space-y-2">
+          <h1 className="text-xl font-bold text-slate-900">This screen could not be drawn</h1>
+          <p className="text-sm text-slate-600">{this.state.message}</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 export default function App() {

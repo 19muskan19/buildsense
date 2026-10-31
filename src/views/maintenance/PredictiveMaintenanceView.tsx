@@ -7,6 +7,14 @@ export const PredictiveMaintenanceView: React.FC<{ onOpenPassport: (id: string) 
   const [selectedBuildingId, setSelectedBuildingId] = useState(buildings[0]?.id || 'bld-001');
 
   const selectedBuilding = buildings.find((b) => b.id === selectedBuildingId) || buildings[0];
+  if (!selectedBuilding) {
+    return (
+      <div className="p-6 max-w-3xl mx-auto space-y-2">
+        <h1 className="text-xl font-bold text-slate-900">Predictive maintenance</h1>
+        <p className="text-sm text-slate-600">No building is available to forecast. Register a facility to see its deterioration trajectory.</p>
+      </div>
+    );
+  }
   const bDefects = defects.filter((d) => d.buildingId === selectedBuilding.id);
 
   // Projections

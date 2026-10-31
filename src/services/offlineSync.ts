@@ -17,6 +17,8 @@ export interface OfflineDraft {
   errorMessage?: string;
 }
 
+import { syncOfflineInspections } from './api';
+
 const STORAGE_KEY = 'buildsense_offline_drafts';
 const LAST_SYNC_KEY = 'buildsense_last_sync_time';
 
@@ -60,16 +62,7 @@ export async function syncPendingDrafts(): Promise<{ synced: number; failed: num
   let failed = 0;
 
   try {
-    const res = await fetch('/api/sync/offline-inspections', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        idempotencyKey: `sync-${Date.now()}`,
-        drafts: pending
-      })
-    });
-
-    const data = await res.json();
+    const data = await syncOfflineInspections(pending);
     if (data.success) {
       // Mark as synced or remove
       const updated = drafts.map((d) => {

@@ -12,6 +12,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import { addSensorReading } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { Sensor } from '../../types';
 import { Modal } from '../../components/common/Modal';
@@ -197,11 +198,7 @@ export const SensorMonitoringView: React.FC = () => {
               <button
                 type="button"
                 onClick={async () => {
-                  await fetch(`/api/sensors/${selectedSensor.id}/readings`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ value: parseFloat(newReadingVal) })
-                  });
+                  await addSensorReading(selectedSensor.id, parseFloat(newReadingVal));
                   setIsAddReadingOpen(false);
                   window.location.reload();
                 }}

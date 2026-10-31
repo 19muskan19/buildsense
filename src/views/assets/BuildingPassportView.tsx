@@ -39,6 +39,15 @@ export const BuildingPassportView: React.FC<BuildingPassportViewProps> = ({ buil
   >('overview');
 
   const building = buildings.find((b) => b.id === buildingId) || buildings[0];
+  if (!building) {
+    return (
+      <div className="p-6 max-w-3xl mx-auto space-y-3">
+        <button onClick={onBack} className="text-sm font-semibold text-blue-700">Back to registry</button>
+        <h1 className="text-xl font-bold text-slate-900">Building record unavailable</h1>
+        <p className="text-sm text-slate-600">Choose a facility from the Building Registry to open its health passport.</p>
+      </div>
+    );
+  }
   const bDefects = defects.filter((d) => d.buildingId === building.id);
   const bElements = elements.filter((e) => e.buildingId === building.id);
   const bWorkOrders = workOrders.filter((w) => w.buildingId === building.id);
